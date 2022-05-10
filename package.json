@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/jmwalsh91/cyrptones-server/issues"
   },
-  "homepage": "https://github.com/jmwalsh91/cyrptones-server#readme"
+  "homepage": "https://github.com/jmwalsh91/cyrptones-server#readme",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
 }
