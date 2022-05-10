@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "node index.js"  
   },
   "repository": {
     "type": "git",
@@ -14,9 +14,9 @@
   "author": "jordan walsh",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/jmwalsh91/cyrptones-server/issues"
+    "url": "https://github.com/jmwalsh91/cryptones-server/issues"
   },
-  "homepage": "https://github.com/jmwalsh91/cyrptones-server#readme",
+  "homepage": "https://github.com/jmwalsh91/cryptones-server#readme",
   "dependencies": {
     "express": "^4.18.1"
   }
