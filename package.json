@@ -1,0 +1,19 @@
+{
+  "name": "y",
+  "version": "1.0.0",
+  "description": "api for cryptones web app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jmwalsh91/cyrptones-server.git"
+  },
+  "author": "jordan walsh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jmwalsh91/cyrptones-server/issues"
+  },
+  "homepage": "https://github.com/jmwalsh91/cyrptones-server#readme"
+}
