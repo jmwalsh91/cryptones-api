@@ -4,7 +4,7 @@
   "description": "api for cryptones web app",
   "main": "app.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start": "node ./src/app.ts"
   },
   "repository": {
@@ -25,7 +25,9 @@
   },
   "devDependencies": {
     "@types/jest": "^27.5.0",
+    "@types/supertest": "^2.0.12",
     "jest": "^28.1.0",
+    "supertest": "^6.2.3",
     "ts-jest": "^28.0.2"
   }
 }
