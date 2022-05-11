@@ -10,7 +10,7 @@ describe('/', () => {
     it("index route sends response when route is hit", async () => {
         const res = await request(app)
         .post("/")
-        .send({});
+        .send({request: ""});
 
         expect(res.body).toBe({})
 
