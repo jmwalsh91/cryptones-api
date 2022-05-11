@@ -4,7 +4,7 @@
   "description": "api for cryptones web app",
   "main": "app.ts",
   "scripts": {
-    "test": "jest --watchall --maxWorkers=1",
+    "test": "jest --watchAll --maxWorkers=1",
     "start": "node ./src/app.ts"
   },
   "repository": {

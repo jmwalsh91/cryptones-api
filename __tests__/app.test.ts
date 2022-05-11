@@ -12,7 +12,7 @@ describe('/', () => {
         .post("/")
         .send({request: ""});
 
-        expect(res.body).toBe({})
+        expect(res.body).toStrictEqual({})
 
     }, 1000)
 })

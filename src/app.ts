@@ -12,10 +12,9 @@ app.get("/", (req: {} , res:TypedResponse<{response: string}>) => res.json({"res
 
 const port = process.env.PORT || 8080
 
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(port, () => console.log(`running. listening on port ${port}`))
+}
 
-
-app.listen(port, () => {
-  console.log(`running. listening on port ${port}`);
-});
 
 export default app 
