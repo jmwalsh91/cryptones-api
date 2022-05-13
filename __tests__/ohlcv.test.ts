@@ -6,6 +6,5 @@ describe('/', () => {
         const res = await request(app)
         .get("/api/ohlcv")
         .expect('Content-Type', "text/html; charset=utf-8")
-
     }, 1000)
 })

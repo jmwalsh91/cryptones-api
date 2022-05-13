@@ -2,10 +2,11 @@
   "name": "y",
   "version": "1.0.0",
   "description": "api for cryptones web app",
+  "type" : "commonjs",
   "main": "app.ts",
   "scripts": {
     "test": "jest --watchAll --maxWorkers=1",
-    "start": "node ./src/app.ts"
+    "start": "node ./dist/app.js"
   },
   "repository": {
     "type": "git",
