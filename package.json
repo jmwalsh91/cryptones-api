@@ -2,22 +2,35 @@
   "name": "y",
   "version": "1.0.0",
   "description": "api for cryptones web app",
-  "main": "index.js",
+  "type": "commonjs",
+  "main": "app.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"  
+    "test": "jest --watchAll --maxWorkers=1",
+    "start": "node ./dist/app.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jmwalsh91/cyrptones-server.git"
   },
   "author": "jordan walsh",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/jmwalsh91/cryptones-server/issues"
   },
   "homepage": "https://github.com/jmwalsh91/cryptones-server#readme",
   "dependencies": {
-    "express": "^4.18.1"
+    "@types/express": "^4.17.13",
+    "axios": "^0.27.2",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "ts-node": "^10.7.0",
+    "typescript": "^4.6.4"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.5.0",
+    "@types/supertest": "^2.0.12",
+    "jest": "^28.1.0",
+    "supertest": "^6.2.3",
+    "ts-jest": "^28.0.2"
   }
 }
