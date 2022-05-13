@@ -1,3 +1,6 @@
+require('dotenv').config()
+
+
 import type { TypedRequestBody, TypedResponse } from "./types/interfaces";
 import routerOhlcv from "./controllers/ohlcv";
 import { initServer } from "./utils/server";
@@ -9,7 +12,7 @@ const app = initServer()
 
 //Index route: format for consistent implementation of interface and type. 
 //TODO: Interfaces for response shape, abstract response validation from interface for each endpoint.
-app.get("/", (req: {} , res:TypedResponse<{response: string}>) => res.json({"response" : "This is a response"}));
+app.get("/", (req: {} , res:TypedResponse<{response: string}>) => res.send({"response" : "This is a response"}));
 
 //Routes
 app.use('/api/ohclv', routerOhlcv)

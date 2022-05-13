@@ -6,5 +6,5 @@ export interface TypedRequestBody<T> extends Express.Request {
 }
 
 export interface TypedResponse<ResBody> extends Express.Response {
-   json: Send<ResBody, this>;
+   send: Send<ResBody, this>;
 }

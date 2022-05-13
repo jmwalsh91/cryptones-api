@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from "axios";
+import axios, { AxiosInstance, AxiosResponse } from "axios";
 const alphaKey = process.env.APIKEY;
 //Axios instance for querying alphavantage api
 const alphavantage: AxiosInstance = axios.create({
@@ -7,7 +7,9 @@ const alphavantage: AxiosInstance = axios.create({
 });
 
 export const getOhclv = async () => {
-  const data = await alphavantage.get("", {
+    console.log(alphaKey)
+    
+  const data: AxiosResponse = await alphavantage.get("", {
     params: {
       symbol: "BTC",
       market: "USD",
@@ -15,4 +17,9 @@ export const getOhclv = async () => {
       apikey: alphaKey,
     },
   })
+  .then(data => {
+      console.log(data.data)
+      return data
+  })
+  //TODO: CATCH
 };
