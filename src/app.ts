@@ -1,8 +1,7 @@
-import type { TypedRequestBody, TypedResponse } from "interfaces";
+import type { TypedRequestBody, TypedResponse } from "./types/interfaces";
 import routerOhlcv from "./controllers/ohlcv";
 import { initServer } from "./utils/server";
 
-const express = require("express");
 
 //initialize server, accepts no args
 //TODO: additional config in initServer function
