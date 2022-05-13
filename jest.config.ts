@@ -1,5 +1,6 @@
 export default {
   preset: 'ts-jest',
+/*   esModuleInterop: 'true', */
   testEnvironment: 'node',
   transform: {
     '^.+\\.ts?$': 'ts-jest',

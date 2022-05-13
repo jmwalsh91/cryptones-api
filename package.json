@@ -13,7 +13,7 @@
     "url": "git+https://github.com/jmwalsh91/cyrptones-server.git"
   },
   "author": "jordan walsh",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/jmwalsh91/cryptones-server/issues"
   },
