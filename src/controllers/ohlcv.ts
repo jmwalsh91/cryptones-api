@@ -1,5 +1,10 @@
-import _ from "lodash"
+import _ from "lodash";
 import { getOhclv } from "../services/AxiosInstances";
+import {
+  formatDate,
+  getVolumeArrayFromOhclv,
+  reshapeObject,
+} from "../utils/reshape";
 import { TypedRequestBody, TypedResponse } from "../types/interfaces";
 const express = require("express");
 
@@ -21,26 +26,15 @@ routerOhlcv.get(
   }
 );
 
-//TODO: refactor this function
+//TODO: refactor
 routerOhlcv.interceptors.response.use((response) => {
   console.log("interceptor");
   let target = response.data["Time Series Crypto (5min)"];
-
-  function formatRes(arrOne, arrTwo) {
-    let resFormatted
-    return (resFormatted = _.zip(arrOne, arrTwo));
-  }
-  const reqKeys = Object.keys(target).map((thing) => {
-    return Date.parse(thing);
-  });
-  const formattedOb = Object.values(target).map((thing) => {
-    return Object.values(thing);
-  });
-  let volArr = formattedOb.map((thing) => {
-    return thing.pop();
-  });
-  formatRes(reqKeys, formattedOb);
-  return (response = { resFormatted, volArr });
+  let formattedDate = formatDate(target);
+  let objectValues = reshapeObject(target);
+  let volumeArray = getVolumeArrayFromOhclv(objectValues);
+  let formattedOhcl = _.zip(formattedDate, objectValues);
+  return (response = { formattedOhcl, volumeArray });
 });
 
 export default routerOhlcv;
