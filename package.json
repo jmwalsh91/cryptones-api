@@ -20,6 +20,7 @@
   "homepage": "https://github.com/jmwalsh91/cryptones-server#readme",
   "dependencies": {
     "@types/express": "^4.17.13",
+    "@types/lodash": "^4.14.182",
     "axios": "^0.27.2",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",

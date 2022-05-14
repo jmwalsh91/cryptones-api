@@ -13,7 +13,7 @@ const formattedDate: Array<number> = Object.keys(target).map((date) => {
   return objValues
 }
 
-export function getVolumeArrayFromOhclv (objectVals) {
+export function getVolumeArrayFromOhlcv (objectVals) {
     let volumeArray = objectVals.map((thing) => {
         return thing.pop();
       });
