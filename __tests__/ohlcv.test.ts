@@ -1,5 +1,5 @@
 import app from '../src/app';
-const request = require("supertest")
+import request from "supertest"
 
 //Tests for ohlcv route
 describe('/', () => {
