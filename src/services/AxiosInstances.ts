@@ -37,6 +37,7 @@ export const getOhclv = async () => {
   //TODO: CATCH
 };
 
+//intercepts response from API and reshapes response so that data can be utilized in the client with minimal operations
 //TODO: refactor
 alphavantage.interceptors.response.use((response) => {
   console.log("interceptor");

@@ -6,6 +6,8 @@ const express = require("express");
 //router for "open, high, low, close, volume" query
 const routerOhlcv = express.Router();
 //TODO: error handling
+
+//index route .get() -- call getOhclv() which sends request to API, response from api gets intercepted and data is reshaped, routerOhlcv sends reshaped data to client as response.
 routerOhlcv.get(
   "",
   async (
