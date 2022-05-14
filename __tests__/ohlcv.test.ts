@@ -1,7 +1,9 @@
 import app from '../src/app';
-const request = require("supertest")
+import request from "supertest"
 
+//Tests for ohlcv route
 describe('/', () => {
+    //that the route is hit, and returns a response with "txt/html" content type
     it("ohlcv router is hit", async () => {
         const res = await request(app)
         .get("/api/ohlcv")
