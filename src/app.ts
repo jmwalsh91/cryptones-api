@@ -8,6 +8,7 @@ import cors from "cors";
 //initialize server, accepts no args
 
 const app = initServer();
+//TODO: ENV VARS FOR ORIGIN INSTEAD OF WILDCARD
 app.use(
   cors({
     origin: "*",
