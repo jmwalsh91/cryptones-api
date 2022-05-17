@@ -43,8 +43,8 @@ export const getOhclv = async () => {
 alphavantage.interceptors.response.use(async (response) => {
   console.log("interceptor");
   let target = response.data["Time Series Crypto (5min)"];
-  let formattedDate: number[] = await formatDate(target);
-  let objectValues: object[] = await reshapeObject(target);
+  let formattedDate: number[] = formatDate(target);
+  let objectValues: object[] = reshapeObject(target);
   let volumeArray: number[] = getVolumeArrayFromOhlcv(objectValues);
   let formattedOhlc: any[][] = _.zip(formattedDate, objectValues);
   let formattedData: ohlcvResponse = { formattedOhlc, volumeArray }

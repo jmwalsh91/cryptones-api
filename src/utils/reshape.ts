@@ -1,12 +1,12 @@
 
 
-export const formatDate = async (target: Array<object>): Promise<number[]> => {
+export const formatDate = (target: Array<object>): number[] => {
 const formattedDate: Array<number> = Object.keys(target).map((date) => {
     return Date.parse(date);
   });
   return formattedDate
 }
-  export const reshapeObject = async (target: Array<object>): Promise<object[]> => {
+  export const reshapeObject = (target: Array<object>): object[] => {
    const objValues: Array<object> = Object.values(target).map((values) => {
     return Object.values(values);
   });
