@@ -39,15 +39,21 @@ export const getOhclv = async () => {
 };
 
 //intercepts response from API and reshapes response so that data can be utilized in the client with minimal operations
-//TODO: refactor
+//TODO: HANDLE ERRORS
 alphavantage.interceptors.response.use(async (response) => {
   console.log("interceptor");
+  //cull meta fro mresponse object
   let target = response.data["Time Series Crypto (5min)"];
+  //transform each date from string with Date.parse(), return array of numbers
   let formattedDate: number[] = formatDate(target);
+  //reshape data so that it is consumable by chart library in client
   let objectValues: object[] = reshapeObject(target);
+  //remove volume from objectValues and return volume array
   let volumeArray: number[] = getVolumeArrayFromOhlcv(objectValues);
+  //package date array alongside objectValues, return array of arrays w/ shape: [number, array [strings]] 
   let formattedOhlc: any[][] = _.zip(formattedDate, objectValues);
+  //Package Ohlc data and volume together in object that conforms to specified interface
   let formattedData: ohlcvResponse = { formattedOhlc, volumeArray }
-  
+  //Hand it over to the client
   return formattedData 
 });
