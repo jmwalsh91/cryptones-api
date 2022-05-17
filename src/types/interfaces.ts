@@ -8,3 +8,8 @@ export interface TypedRequestBody<T> extends Express.Request {
 export interface TypedResponse<ResBody> extends Express.Response {
    send: Send<ResBody, this>;
 }
+
+export interface ohlcvResponse {
+    volumeArray: number[] 
+    formattedOhlc: any[][]
+}

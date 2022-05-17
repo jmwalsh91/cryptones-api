@@ -1,27 +1,33 @@
-require('dotenv').config()
-
+require("dotenv").config();
 
 import type { TypedRequestBody, TypedResponse } from "./types/interfaces";
 import routerOhlcv from "./controllers/ohlcv";
 import { initServer } from "./utils/server";
-
+import cors from "cors";
 
 //initialize server, accepts no args
-//TODO: additional config in initServer function
-const app = initServer()
 
-//Index route: format for consistent implementation of interface and type. 
+const app = initServer();
+//TODO: ENV VARS FOR ORIGIN INSTEAD OF WILDCARD
+app.use(
+  cors({
+    origin: "*",
+  })
+);
+
+//Index route: format for consistent implementation of interface and type.
 //TODO: Interfaces for response shape, abstract response validation from interface for each endpoint.
-app.get("/", (req: {} , res:TypedResponse<{response: string}>) => res.send({"response" : "This is a response"}));
+app.get("/", (req: {}, res: TypedResponse<{ response: string }>) =>
+  res.send({ response: "This is a response" })
+);
 
 //Routes
-app.use('/api/ohclv', routerOhlcv)
+app.use("/api/ohlcv", routerOhlcv);
 
-const port = process.env.PORT || 8080
+const port = process.env.PORT || 8080;
 
-if (process.env.NODE_ENV !== 'test') {
-  app.listen(port, () => console.log(`running. listening on port ${port}`))
+if (process.env.NODE_ENV !== "test") {
+  app.listen(port, () => console.log(`running. listening on port ${port}`));
 }
 
-
-export default app 
+export default app;
