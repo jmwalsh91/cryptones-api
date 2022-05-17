@@ -22,7 +22,7 @@ app.get("/", (req: {}, res: TypedResponse<{ response: string }>) =>
 );
 
 //Routes
-app.use("/api/ohclv", routerOhlcv);
+app.use("/api/ohlcv", routerOhlcv);
 
 const port = process.env.PORT || 8080;
 
