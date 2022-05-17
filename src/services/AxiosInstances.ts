@@ -1,4 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
+import { ohlcvResponse } from "../types/interfaces";
 import {
   formatDate,
   getVolumeArrayFromOhlcv,
@@ -39,14 +40,14 @@ export const getOhclv = async () => {
 
 //intercepts response from API and reshapes response so that data can be utilized in the client with minimal operations
 //TODO: refactor
-alphavantage.interceptors.response.use((response) => {
+alphavantage.interceptors.response.use(async (response) => {
   console.log("interceptor");
   let target = response.data["Time Series Crypto (5min)"];
-  let formattedDate: number[] = formatDate(target);
-  let objectValues: object[] = reshapeObject(target);
-  let volumeArray = getVolumeArrayFromOhlcv(objectValues);
-  let formattedOhcl = _.zip(formattedDate, objectValues);
-  let formattedData = { formattedOhcl, volumeArray }
+  let formattedDate: number[] = await formatDate(target);
+  let objectValues: object[] = await reshapeObject(target);
+  let volumeArray: number[] = getVolumeArrayFromOhlcv(objectValues);
+  let formattedOhlc: any[][] = _.zip(formattedDate, objectValues);
+  let formattedData: ohlcvResponse = { formattedOhlc, volumeArray }
   
   return formattedData 
 });
