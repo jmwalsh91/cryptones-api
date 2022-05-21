@@ -4,6 +4,7 @@ import type { TypedRequestBody, TypedResponse } from "./types/interfaces";
 import routerOhlcv from "./controllers/ohlcv";
 import { initServer } from "./utils/server";
 import cors from "cors";
+import { routerCache } from "./controllers/cache";
 
 //initialize server, accepts no args
 
@@ -23,6 +24,7 @@ app.get("/", (req: {}, res: TypedResponse<{ response: string }>) =>
 
 //Routes
 app.use("/api/ohlcv", routerOhlcv);
+app.use("/cache", routerCache)
 
 const port = process.env.PORT || 8080;
 
