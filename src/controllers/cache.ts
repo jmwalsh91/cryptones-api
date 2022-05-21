@@ -8,7 +8,7 @@ export const routerCache = express.Router();
 
 
 routerCache.post(
-  "/",
+  "",
   async (
     req: TypedRequestBody<Request>,
     res: TypedResponse<any>,

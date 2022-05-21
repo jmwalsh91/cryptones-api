@@ -24,7 +24,7 @@ app.get("/", (req: {}, res: TypedResponse<{ response: string }>) =>
 
 //Routes
 app.use("/api/ohlcv", routerOhlcv);
-app.use("/cache", routerCache)
+app.use("/api/cache", routerCache)
 
 const port = process.env.PORT || 8080;
 
