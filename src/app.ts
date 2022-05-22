@@ -4,7 +4,8 @@ import type { TypedRequestBody, TypedResponse } from "./types/interfaces";
 import routerOhlcv from "./controllers/ohlcv";
 import { initServer } from "./utils/server";
 import cors from "cors";
-
+import { routerCache } from "./controllers/cache";
+const bodyParser = require('body-parser')
 //initialize server, accepts no args
 
 const app = initServer();
@@ -14,7 +15,8 @@ app.use(
     origin: "*",
   })
 );
-
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json())
 //Index route: format for consistent implementation of interface and type.
 //TODO: Interfaces for response shape, abstract response validation from interface for each endpoint.
 app.get("/", (req: {}, res: TypedResponse<{ response: string }>) =>
@@ -23,6 +25,7 @@ app.get("/", (req: {}, res: TypedResponse<{ response: string }>) =>
 
 //Routes
 app.use("/api/ohlcv", routerOhlcv);
+app.use("/api/cache", routerCache)
 
 const port = process.env.PORT || 8080;
 
