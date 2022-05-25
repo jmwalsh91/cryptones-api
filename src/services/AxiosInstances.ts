@@ -44,7 +44,7 @@ export const getParamsOhclv = async (symbol: string, interval: string) => {
   const validInterval: Promise<boolean> = validateInterval(interval);
 
   //if symbol is included in validSymbols array (returns true) and interval is included in validInterval array (returns true), use as query params for .get() to alphavantage. 
-  Promise.all([validSymbol, validInterval]).then(async () => {
+  const data = await Promise.all([validSymbol, validInterval]).then(async () => {
     const data: AxiosResponse = await alphavantage
       .get("", {
         params: {
@@ -59,6 +59,7 @@ export const getParamsOhclv = async (symbol: string, interval: string) => {
       });
     return data;
   });
+  return data 
   //TODO: CATCH
 };
 
