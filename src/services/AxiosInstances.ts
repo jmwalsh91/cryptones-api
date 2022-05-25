@@ -19,7 +19,6 @@ export const alphavantage: AxiosInstance = axios.create({
 //TODO: interface for params object
 //TODO: also in /controllers/ohlcv: interceptor and interface for interceptor's return 
 export const getOhclv = async () => {
-  console.log(alphaKey);
 
   const data: AxiosResponse = await alphavantage
     .get("", {
@@ -37,6 +36,27 @@ export const getOhclv = async () => {
     return data 
   //TODO: CATCH
 };
+
+//OHLCV w/ PARAMS
+export const getParamsOhclv = async (symbol, interval) => {
+
+  const data: AxiosResponse = await alphavantage
+    .get("", {
+      params: {
+        symbol: 
+        market: "USD",
+        interval: "5min",
+        apikey: alphaKey,
+      },
+    })
+    .then((data) => {
+      console.log(data.data);
+      return data;
+    });
+    return data 
+  //TODO: CATCH
+};
+
 
 //intercepts response from API and reshapes response so that data can be utilized in the client with minimal operations
 //TODO: HANDLE ERRORS
