@@ -65,13 +65,15 @@ export const getParamsOhclv = async (symbol: string, interval: string) => {
 
 //intercepts response from API and reshapes response so that data can be utilized in the client with minimal operations
 //TODO: HANDLE ERRORS
+//TODO: EXCHANGE CURRENCY PARAM, REFRESH TIME
+
 alphavantage.interceptors.response.use(async (response) => {
-  console.log("interceptor");
-  console.log(response.data)
-  let interval = response.data['Meta Data']['7. Interval']
-  console.log(interval)
-  let target = response.data[`Time Series Crypto (${interval})`]
-  console.log(target)
+  //get cryptocurrency name to label chart in client, TODO: validate UI consistency in client
+  let tokenName: string = response.data['Meta Data']['3. Digital Currency Name']
+  //get interval to access time series crypto property of response object / cull meta data
+  let interval: string = response.data['Meta Data']['7. Interval']
+  //cull metadata from response object
+  let target: object[] = response.data[`Time Series Crypto (${interval})`]
   //transform each date from string with Date.parse(), return array of numbers
   let formattedDate: number[] = formatDate(target);
   //reshape data so that it is consumable by chart library in client
@@ -81,7 +83,7 @@ alphavantage.interceptors.response.use(async (response) => {
   //package date array alongside objectValues, return array of arrays w/ shape: [number, array [strings]]
   let formattedOhlc: any[][] = _.zip(formattedDate, objectValues);
   //Package Ohlc data and volume together in object that conforms to specified interface
-  let formattedData: ohlcvResponse = { formattedOhlc, volumeArray };
+  let formattedData: ohlcvResponse = { tokenName, interval, formattedOhlc, volumeArray };
   //Hand it over to the client
   return formattedData;
 });

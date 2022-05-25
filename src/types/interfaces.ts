@@ -18,6 +18,8 @@ export interface TypedResponse<ResBody> extends Express.Response {
 }
 
 export interface ohlcvResponse {
+    tokenName: string
+    interval: string
     volumeArray: number[] 
     formattedOhlc: any[][]
 }
