@@ -13,8 +13,8 @@ RUN npm install
 COPY . .
 
 #SET ENV & EXPOSE
-ENV PORT=9393
-EXPOSE 9393
+ENV PORT=80
+EXPOSE 80
 
 #EXEC FORM
 CMD ["npm", "start"]

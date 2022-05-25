@@ -5,7 +5,8 @@ import {
   getVolumeArrayFromOhlcv,
   reshapeObject,
 } from "../utils/reshape";
-const _ = require("lodash")
+import { validateInterval, validateSymbol } from "../utils/validate";
+const _ = require("lodash");
 
 const alphaKey = process.env.APIKEY;
 
@@ -17,10 +18,8 @@ export const alphavantage: AxiosInstance = axios.create({
 
 //get "open high close low volume"
 //TODO: interface for params object
-//TODO: also in /controllers/ohlcv: interceptor and interface for interceptor's return 
+//TODO: also in /controllers/ohlcv: interceptor and interface for interceptor's return
 export const getOhclv = async () => {
-  console.log(alphaKey);
-
   const data: AxiosResponse = await alphavantage
     .get("", {
       params: {
@@ -34,26 +33,57 @@ export const getOhclv = async () => {
       console.log(data.data);
       return data;
     });
-    return data 
+  return data;
+  //TODO: CATCH
+};
+
+//OHLCV w/ PARAMS
+export const getParamsOhclv = async (symbol: string, interval: string) => {
+  //validate params
+  const validSymbol: Promise<boolean> = validateSymbol(symbol);
+  const validInterval: Promise<boolean> = validateInterval(interval);
+
+  //if symbol is included in validSymbols array (returns true) and interval is included in validInterval array (returns true), use as query params for .get() to alphavantage. 
+  const data = await Promise.all([validSymbol, validInterval]).then(async () => {
+    const data: AxiosResponse = await alphavantage
+      .get("", {
+        params: {
+          symbol: `${symbol}`,
+          market: "USD",
+          interval: `${interval}`,
+          apikey: alphaKey,
+        },
+      })
+      .then((data) => {
+        return data;
+      });
+    return data;
+  });
+  return data 
   //TODO: CATCH
 };
 
 //intercepts response from API and reshapes response so that data can be utilized in the client with minimal operations
 //TODO: HANDLE ERRORS
+//TODO: EXCHANGE CURRENCY PARAM, REFRESH TIME
+
 alphavantage.interceptors.response.use(async (response) => {
-  console.log("interceptor");
-  //cull meta fro mresponse object
-  let target = response.data["Time Series Crypto (5min)"];
+  //get cryptocurrency name to label chart in client, TODO: validate UI consistency in client
+  let tokenName: string = response.data['Meta Data']['3. Digital Currency Name']
+  //get interval to access time series crypto property of response object / cull meta data
+  let interval: string = response.data['Meta Data']['7. Interval']
+  //cull metadata from response object
+  let target: object[] = response.data[`Time Series Crypto (${interval})`]
   //transform each date from string with Date.parse(), return array of numbers
   let formattedDate: number[] = formatDate(target);
   //reshape data so that it is consumable by chart library in client
   let objectValues: object[] = reshapeObject(target);
   //remove volume from objectValues and return volume array
   let volumeArray: number[] = getVolumeArrayFromOhlcv(objectValues);
-  //package date array alongside objectValues, return array of arrays w/ shape: [number, array [strings]] 
+  //package date array alongside objectValues, return array of arrays w/ shape: [number, array [strings]]
   let formattedOhlc: any[][] = _.zip(formattedDate, objectValues);
   //Package Ohlc data and volume together in object that conforms to specified interface
-  let formattedData: ohlcvResponse = { formattedOhlc, volumeArray }
+  let formattedData: ohlcvResponse = { tokenName, interval, formattedOhlc, volumeArray };
   //Hand it over to the client
-  return formattedData 
+  return formattedData;
 });

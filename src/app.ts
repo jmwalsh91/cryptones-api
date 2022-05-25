@@ -27,7 +27,7 @@ app.get("/", (req: {}, res: TypedResponse<{ response: string }>) =>
 app.use("/api/ohlcv", routerOhlcv);
 app.use("/api/cache", routerCache)
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 80;
 
 if (process.env.NODE_ENV !== "test") {
   app.listen(port, () => console.log(`running. listening on port ${port}`));
