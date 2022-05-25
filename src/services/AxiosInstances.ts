@@ -67,8 +67,11 @@ export const getParamsOhclv = async (symbol: string, interval: string) => {
 //TODO: HANDLE ERRORS
 alphavantage.interceptors.response.use(async (response) => {
   console.log("interceptor");
-  //cull meta fro mresponse object
-  let target = response.data["Time Series Crypto (5min)"];
+  console.log(response.data)
+  let interval = response.data['Meta Data']['7. Interval']
+  console.log(interval)
+  let target = response.data[`Time Series Crypto (${interval})`]
+  console.log(target)
   //transform each date from string with Date.parse(), return array of numbers
   let formattedDate: number[] = formatDate(target);
   //reshape data so that it is consumable by chart library in client
