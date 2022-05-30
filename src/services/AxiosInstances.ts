@@ -45,7 +45,7 @@ export const getParamsOhclv = async (symbol: string, interval: string) => {
 
   //if symbol is included in validSymbols array (returns true) and interval is included in validInterval array (returns true), use as query params for .get() to alphavantage. 
   const data = await Promise.all([validSymbol, validInterval]).then(async () => {
-    const data: AxiosResponse = await alphavantage
+    const data = await alphavantage
       .get("", {
         params: {
           symbol: `${symbol}`,
@@ -56,7 +56,8 @@ export const getParamsOhclv = async (symbol: string, interval: string) => {
       })
       .then((data) => {
         return data;
-      });
+      })
+      .catch((err) => console.log(err));
     return data;
   });
   return data 
