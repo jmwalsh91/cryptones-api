@@ -75,10 +75,17 @@ export const getParamsOhclv = async (symbol: string, interval: string) => {
 //intercepts response from API and reshapes response so that data can be utilized in the client with minimal operations
 //TODO: HANDLE ERRORS
 //TODO: EXCHANGE CURRENCY PARAM, REFRESH TIME
-
+interface ErrorStatus {
+  reason: string
+  err: number
+}
 alphavantage.interceptors.response.use(async (response) => {
   if (!response.data['Meta Data']['3. Digital Currency Name']) {
-    return new Error("Could not access specified key in JSON response. This could be an error on the server, or stemming from a third-party API.");
+    let errorRes: ErrorStatus = {
+      reason: response.statusText,
+      err: response.status
+    }
+    return errorRes
   } else {
   //get cryptocurrency name to label chart in client, TODO: validate UI consistency in client
   let tokenName: string = response.data['Meta Data']['3. Digital Currency Name']
