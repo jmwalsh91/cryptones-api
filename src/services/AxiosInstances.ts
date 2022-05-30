@@ -1,4 +1,6 @@
-import axios, { AxiosInstance, AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
+import { response } from "express";
+import { isError } from "lodash";
 import { ohlcvResponse } from "../types/interfaces";
 import {
   formatDate,
@@ -57,11 +59,17 @@ export const getParamsOhclv = async (symbol: string, interval: string) => {
       .then((data) => {
         return data;
       })
-      .catch((err) => console.log(err));
+      .catch((error: Error | AxiosError) => {
+        if (axios.isAxiosError(error)) {
+          return response.status(500).send(AxiosError) 
+        } else {
+          return response.send(error)
+        }
+        
+      });
     return data;
   });
   return data 
-  //TODO: CATCH
 };
 
 //intercepts response from API and reshapes response so that data can be utilized in the client with minimal operations
@@ -69,6 +77,9 @@ export const getParamsOhclv = async (symbol: string, interval: string) => {
 //TODO: EXCHANGE CURRENCY PARAM, REFRESH TIME
 
 alphavantage.interceptors.response.use(async (response) => {
+  if (!response.data['Meta Data']['3. Digital Currency Name']) {
+    return new Error("Could not access specified key in JSON response. This could be an error on the server, or stemming from a third-party API.");
+  } else {
   //get cryptocurrency name to label chart in client, TODO: validate UI consistency in client
   let tokenName: string = response.data['Meta Data']['3. Digital Currency Name']
   //get interval to access time series crypto property of response object / cull meta data
@@ -87,4 +98,5 @@ alphavantage.interceptors.response.use(async (response) => {
   let formattedData: ohlcvResponse = { tokenName, interval, formattedOhlc, volumeArray };
   //Hand it over to the client
   return formattedData;
+  }
 });
