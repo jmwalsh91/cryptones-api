@@ -32,8 +32,8 @@ routerOhlcv.get(
   "/:symbol/:interval",
   async (
     req: TypedRequestBody<Request>,
-    _response: TypedResponse<any>,
-    _error: Error
+    res: TypedResponse<any>,
+    error: Error
   ) => {
     //get symbol and interval from params
     const symbol: RequestParams["symbol"] = req.params.symbol;
@@ -43,7 +43,7 @@ routerOhlcv.get(
     // & if valid, executes query via alphavantaga axios instance => response is intercepted and reformatted => data is returned and sent to client.
     
     const data = await getParamsOhclv(symbol, interval)
-    return data 
+    return res.send(data) 
   }
-);
+)
 export default routerOhlcv;
