@@ -45,65 +45,72 @@ export const getParamsOhclv = async (symbol: string, interval: string) => {
   const validSymbol: Promise<boolean> = validateSymbol(symbol);
   const validInterval: Promise<boolean> = validateInterval(interval);
 
-  //if symbol is included in validSymbols array (returns true) and interval is included in validInterval array (returns true), use as query params for .get() to alphavantage. 
-  const data = await Promise.all([validSymbol, validInterval]).then(async () => {
-    const data = await alphavantage
-      .get("", {
-        params: {
-          symbol: `${symbol}`,
-          market: "USD",
-          interval: `${interval}`,
-          apikey: alphaKey,
-        },
-      })
-      .then((data) => {
-        return data;
-      })
-      .catch((error: Error | AxiosError) => {
-        if (axios.isAxiosError(error)) {
-          return response.status(500).send(AxiosError) 
-        } else {
-          return response.send(error)
-        }
-        
-      });
-    return data;
-  });
-  return data 
+  //if symbol is included in validSymbols array (returns true) and interval is included in validInterval array (returns true), use as query params for .get() to alphavantage.
+  const data = await Promise.all([validSymbol, validInterval]).then(
+    async () => {
+      const data = await alphavantage
+        .get("", {
+          params: {
+            symbol: `${symbol}`,
+            market: "USD",
+            interval: `${interval}`,
+            apikey: alphaKey,
+          },
+        })
+        .then((data) => {
+          return data;
+        })
+        .catch((error: Error | AxiosError) => {
+          if (axios.isAxiosError(error)) {
+            return response.status(500).send(AxiosError);
+          } else {
+            return response.send(error);
+          }
+        });
+      return data;
+    }
+  );
+  return data;
 };
 
 //intercepts response from API and reshapes response so that data can be utilized in the client with minimal operations
 //TODO: HANDLE ERRORS
 //TODO: EXCHANGE CURRENCY PARAM, REFRESH TIME
 interface ErrorStatus {
-  reason: string
-  err: number
+  reason: string;
+  err: number;
 }
 alphavantage.interceptors.response.use(async (response) => {
-  if (!response.data['Meta Data']['3. Digital Currency Name']) {
+  if (!response.data["Meta Data"]["3. Digital Currency Name"]) {
     let errorRes: ErrorStatus = {
       reason: response.statusText,
-      err: response.status
-    }
-    return errorRes
+      err: response.status,
+    };
+    return errorRes;
   } else {
-  //get cryptocurrency name to label chart in client, TODO: validate UI consistency in client
-  let tokenName: string = response.data['Meta Data']['3. Digital Currency Name']
-  //get interval to access time series crypto property of response object / cull meta data
-  let interval: string = response.data['Meta Data']['7. Interval']
-  //cull metadata from response object
-  let target: object[] = response.data[`Time Series Crypto (${interval})`]
-  //transform each date from string with Date.parse(), return array of numbers
-  let formattedDate: number[] = formatDate(target);
-  //reshape data so that it is consumable by chart library in client
-  let objectValues: object[] = reshapeObject(target);
-  //remove volume from objectValues and return volume array
-  let volumeArray: number[] = getVolumeArrayFromOhlcv(objectValues);
-  //package date array alongside objectValues, return array of arrays w/ shape: [number, array [strings]]
-  let formattedOhlc: any[][] = _.zip(formattedDate, objectValues);
-  //Package Ohlc data and volume together in object that conforms to specified interface
-  let formattedData: ohlcvResponse = { tokenName, interval, formattedOhlc, volumeArray };
-  //Hand it over to the client
-  return formattedData;
+    //get cryptocurrency name to label chart in client, TODO: validate UI consistency in client
+    let tokenName: string =
+      response.data["Meta Data"]["3. Digital Currency Name"];
+    //get interval to access time series crypto property of response object / cull meta data
+    let interval: string = response.data["Meta Data"]["7. Interval"];
+    //cull metadata from response object
+    let target: object[] = response.data[`Time Series Crypto (${interval})`];
+    //transform each date from string with Date.parse(), return array of numbers
+    let formattedDate: number[] = formatDate(target);
+    //reshape data so that it is consumable by chart library in client
+    let objectValues: object[] = reshapeObject(target);
+    //remove volume from objectValues and return volume array
+    let volumeArray: number[] = getVolumeArrayFromOhlcv(objectValues);
+    //package date array alongside objectValues, return array of arrays w/ shape: [number, array [strings]]
+    let formattedOhlc: any[][] = _.zip(formattedDate, objectValues);
+    //Package Ohlc data and volume together in object that conforms to specified interface
+    let formattedData: ohlcvResponse = {
+      tokenName,
+      interval,
+      formattedOhlc,
+      volumeArray,
+    };
+    //Pass it back to router to send to the client
+    return formattedData;
   }
 });

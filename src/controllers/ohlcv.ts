@@ -1,6 +1,12 @@
+import { AxiosResponse } from "axios";
+import { response } from "express";
 import { getOhclv, getParamsOhclv } from "../services/AxiosInstances";
 
-import { RequestParams, TypedRequestBody, TypedResponse } from "../types/interfaces";
+import {
+  RequestParams,
+  TypedRequestBody,
+  TypedResponse,
+} from "../types/interfaces";
 const express = require("express");
 
 //router for "open, high, low, close, volume" query
@@ -21,19 +27,23 @@ routerOhlcv.get(
   }
 );
 //router to handle symbol params / interval params route
-routerOhlcv.get("/:symbol/:interval", async (
-  req: TypedRequestBody<Request>,
-  res: TypedResponse<any>,
-  err: Error
-) => {
-  //get symbol and interval from params
-  const symbol: RequestParams['symbol'] = req.params.symbol
-  const interval: RequestParams['interval'] = req.params.interval
-  //pass symbol and interval to getParamsOhclv
-  //getParams... validates args are strings that are included in array of acceptable values
-  // & if valid, executes query via alphavantaga axios instance => response is intercepted and reformatted => data is returned and sent to client. 
-  let data = await getParamsOhclv(symbol, interval);
-  console.log(data);
-  return res.send(data);
-})
+//TODO: Strengthen typing.
+routerOhlcv.get(
+  "/:symbol/:interval",
+  async (
+    req: TypedRequestBody<Request>,
+    _response: TypedResponse<any>,
+    _error: Error
+  ) => {
+    //get symbol and interval from params
+    const symbol: RequestParams["symbol"] = req.params.symbol;
+    const interval: RequestParams["interval"] = req.params.interval;
+    //pass symbol and interval to getParamsOhclv
+    //getParams... validates args are strings that are included in array of acceptable values
+    // & if valid, executes query via alphavantaga axios instance => response is intercepted and reformatted => data is returned and sent to client.
+    
+    const data = await getParamsOhclv(symbol, interval)
+    return data 
+  }
+);
 export default routerOhlcv;
