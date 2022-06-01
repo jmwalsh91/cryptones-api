@@ -5,7 +5,9 @@ import routerOhlcv from "./controllers/ohlcv";
 import { initServer } from "./utils/server";
 import cors from "cors";
 import { routerCache } from "./controllers/cache";
-const bodyParser = require('body-parser')
+import { isExpressionStatement } from "typescript";
+import { Errback, Response } from "express";
+const bodyParser = require("body-parser");
 //initialize server, accepts no args
 
 const app = initServer();
@@ -16,7 +18,7 @@ app.use(
   })
 );
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 //Index route: format for consistent implementation of interface and type.
 //TODO: Interfaces for response shape, abstract response validation from interface for each endpoint.
 app.get("/", (req: {}, res: TypedResponse<{ response: string }>) =>
@@ -25,12 +27,20 @@ app.get("/", (req: {}, res: TypedResponse<{ response: string }>) =>
 
 //Routes
 app.use("/api/ohlcv", routerOhlcv);
-app.use("/api/cache", routerCache)
+app.use("/api/cache", routerCache);
 
 const port = process.env.PORT || 80;
 
 if (process.env.NODE_ENV !== "test") {
   app.listen(port, () => console.log(`running. listening on port ${port}`));
 }
+
+//404 Middleware TODO: strengthen typing
+app.use(function (_req, res: Response, error: Error) {
+  if (error) {
+    console.log(error);
+    return res.status(404).send("Requested resource does not exist.");
+  }
+});
 
 export default app;
