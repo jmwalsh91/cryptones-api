@@ -8,7 +8,7 @@ COPY package*.json ./
 
 #RUN
 RUN npm install
-RUN npm tsc
+
 
 #PACKAGE
 COPY . .
